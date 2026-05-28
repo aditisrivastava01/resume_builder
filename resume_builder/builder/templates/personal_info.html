@@ -16,7 +16,12 @@
 <form method="POST">
 {% csrf_token %}
 
-{{ form.as_p }}
+{% for field in form %}
+    <div class="input-group">
+        {{ field.label_tag }}
+        {{ field }}
+    </div>
+{% endfor %}
 
 <div class="step-actions">
     <a href="/dashboard/" class="btn-back">← Back</a>

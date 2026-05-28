@@ -1,18 +1,14 @@
 {% extends 'base.html' %}
-
 {% block content %}
-
 <div class="step-wrap">
 <div class="step-card">
 
-    <!-- Progress -->
     <div class="progress">
         <div class="progress-bar" style="width:100%"></div>
     </div>
 
-    <!-- Title -->
     <div class="step-title">
-        <h2> Projects</h2>
+        <h2>🚀 Projects</h2>
         <p>Showcase your best work</p>
     </div>
 
@@ -22,57 +18,45 @@
 
         {% for form in formset %}
             <div class="form-section">
-
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <strong style="color:#5c6ef8; font-size:13px;">
-                        Project {{ forloop.counter }}
-                    </strong>
-
+                    <strong style="color:#6ba3f0; font-size:13px;">Project {{ forloop.counter }}</strong>
                     {% if form.instance.pk %}
                         <label style="color:#ef4444; font-size:12px; display:flex; align-items:center; gap:4px; cursor:pointer;">
                             {{ form.DELETE }} Remove
                         </label>
                     {% endif %}
                 </div>
-
-                {{ form.as_p }}
-
+                {% for field in form.visible_fields %}
+                    <div class="input-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                   
             </div>
         {% endfor %}
 
-        <!-- Add More Button -->
-        <button type="button" onclick="addForm()" class="btn-back" style="margin-top:10px;">
-            + Add Another Project
-        </button>
+        <button type="button" onclick="addForm()" class="btn-add">+ Add Another Project</button>
 
-        <!-- Buttons -->
         <div class="step-actions">
             <a href="javascript:history.back()" class="btn-back">← Back</a>
-
-            <button type="submit" class="btn-next" style="background:#10b981;">
+            <button type="submit" class="btn-next" style="background:#0f7a5a !important;">
                 Finish & Preview →
             </button>
         </div>
-
     </form>
 
 </div>
 </div>
-
-<!-- JS -->
 <script>
 function addForm() {
     const totalForms = document.getElementById('id_form-TOTAL_FORMS');
     const currentForms = document.querySelectorAll('.form-section').length;
-
     const newForm = document.querySelector('.form-section').cloneNode(true);
-
     newForm.innerHTML = newForm.innerHTML.replace(/form-(\d)-/g, `form-${currentForms}-`);
-
+    newForm.querySelectorAll('input:not([type=hidden]), textarea, select').forEach(el => el.value = '');
     document.querySelector('form').insertBefore(newForm, document.querySelector('.step-actions'));
-
     totalForms.value = currentForms + 1;
 }
 </script>
-
 {% endblock %}
