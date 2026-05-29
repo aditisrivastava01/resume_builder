@@ -1,44 +1,50 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8 col-lg-7">
+<div class="step-wrap">
+<div class="step-card">
 
-        <div class="resume-card p-4">
-            <div class="progress">
-                <div class="progress-bar" style="width:40%"></div>
-            </div>
-            <div class="section-title"> Education</div>
-            <p class="section-subtitle">Add your educational qualifications</p>
+    <div class="progress">
+        <div class="progress-bar" style="width:40%"></div>
+    </div>
 
-            <form method="POST">
-                {% csrf_token %}
-                {{ formset.management_form }}
+    <div class="step-title">
+        <h2>🎓 Education</h2>
+        <p>Add your educational qualifications</p>
+    </div>
 
-                {% for form in formset %}
-                    <div class="form-section">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                            <strong style="color:#5c6ef8; font-size:13px;">Entry {{ forloop.counter }}</strong>
-                            {% if form.instance.pk %}
-                                <label style="color:#ef4444; font-size:12px; display:flex; align-items:center; gap:4px; cursor:pointer;">
-                                    {{ form.DELETE }} Remove
-                                </label>
-                            {% endif %}
-                        </div>
-                        {{ form.as_p }}
+    <form method="POST">
+        {% csrf_token %}
+        {{ formset.management_form }}
+
+        {% for form in formset %}
+            <div class="form-section">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <strong style="color:#6ba3f0; font-size:13px;">Entry {{ forloop.counter }}</strong>
+                    {% if form.instance.pk %}
+                        <label style="color:#ef4444; font-size:12px; display:flex; align-items:center; gap:4px; cursor:pointer;">
+                            {{ form.DELETE }} Remove
+                        </label>
+                    {% endif %}
+                </div>
+                {% for field in form.visible_fields %}
+                    <div class="input-group">
+                        {{ field.label_tag }}
+                        {{ field }}
                     </div>
                 {% endfor %}
-                <div class="step-actions">
-                    <a href="javascript:history.back()" class="btn-back">← Back</a>
-                    <button class="btn-next">Next →</button>
-                </div>
+                {% comment %} <button type="button" class="remove-btn"
+                    onclick="this.closest('.form-section').remove()">
+                    ❌ Remove
+                </button>                 {% endcomment %}
+            </div>
+        {% endfor %}
 
-                <button type="submit" class="btn btn-custom w-100 mt-2">
-                    Next: Experience →
-                </button>
-            </form>
+        <div class="step-actions">
+            <a href="javascript:history.back()" class="btn-back">← Back</a>
+            <button type="submit" class="btn-next">Next →</button>
         </div>
+    </form>
 
-    </div>
+</div>
 </div>
 {% endblock %}
